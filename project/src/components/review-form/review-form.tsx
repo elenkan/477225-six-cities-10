@@ -1,14 +1,14 @@
 import {useState} from 'react';
-import {requestData} from '../../types';
+import {RequestData} from '../../types';
 import {ChangeEvent} from 'react';
 
 const ReviewForm = () => {
-  const [formData, setFormData] = useState<requestData>({
+  const [formData, setFormData] = useState<RequestData>({
     review: '',
     rating: ''
   });
 
-  const fieldChangeHandle = (evt: ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) => {
+  const fieldChangeHandle = (evt: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const {name, value} = evt.target;
     setFormData({...formData, [name]: value});
   };
@@ -16,7 +16,12 @@ const ReviewForm = () => {
     <form className="reviews__form form" action="#" method="post">
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
       <div className="reviews__rating-form form__rating">
-        <input className="form__rating-input visually-hidden" name="rating" value="5" id="5-stars" type="radio" onChange={fieldChangeHandle}/>
+        <input className="form__rating-input visually-hidden"
+               name="rating"
+               value="5"
+               id="5-stars"
+               type="radio"
+               onChange={fieldChangeHandle}/>
         <label htmlFor="5-stars" className="reviews__rating-label form__rating-label" title="perfect">
           <svg className="form__star-image" width="37" height="33">
             <use xlinkHref="#icon-star"/>

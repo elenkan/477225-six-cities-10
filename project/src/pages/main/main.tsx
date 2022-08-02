@@ -1,6 +1,8 @@
 import Header from '../../components/header';
 import PlaceCardList from '../../components/place-card-list';
+import Map from './../../components/map';
 import offers from '../../mocks/offers';
+import mapData from './../../mocks/map';
 
 const Main = () => (
   <div className="page page--gray page--main">
@@ -64,10 +66,12 @@ const Main = () => (
                 <li className="places__option" tabIndex={0}>Top rated first</li>
               </ul>
             </form>
-            <PlaceCardList cardList={offers} />
+            <PlaceCardList cardList={offers}/>
           </section>
           <div className="cities__right-section">
-            <section className="cities__map map"/>
+            <div className="cities__map map">
+              <Map centerCoordinate={mapData.city} listCoordinate={mapData.points}/>
+            </div>
           </div>
         </div>
       </div>
