@@ -1,14 +1,17 @@
 import {useParams} from 'react-router-dom';
 import {Card} from '../../types';
-import offers from '../../mocks/offers';
 import Header from '../../components/header';
 import PlaceCardList from '../../components/place-card-list';
-import ReviewForm from '../../components/review-form';
+import ReviewsList from '../../components/reviews-list';
+import Map from '../../components/map';
+import offers from '../../mocks/offers';
+import reviews from '../../mocks/reviews';
+import mapData from '../../mocks/map';
 
 const Room = () => {
   const {id} = useParams();
   const cardDetails = offers.find((item) => item.id.toString() === id) ? offers.find((item) => item.id.toString() === id) : null;
-  const getList = (list:Card[]) => list.slice(1,3);
+  const getList = (list: Card[]) => list.slice(1, 3);
   const nearestPlaceList = getList(offers);
 
   return (
@@ -114,7 +117,11 @@ const Room = () => {
                 <h2 className="property__host-title">Meet the host</h2>
                 <div className="property__host-user user">
                   <div className="property__avatar-wrapper property__avatar-wrapper--pro user__avatar-wrapper">
-                    <img className="property__avatar user__avatar" src="img/avatar-angelina.jpg" width="74" height="74" alt="Host avatar"/>
+                    <img className="property__avatar user__avatar"
+                         src="img/avatar-angelina.jpg"
+                         width="74"
+                         height="74"
+                         alt="Host avatar"/>
                   </div>
                   <span className="property__user-name">
                     Angelina
@@ -134,43 +141,17 @@ const Room = () => {
                   </p>
                 </div>
               </div>
-              <section className="property__reviews reviews">
-                <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">1</span></h2>
-                <ul className="reviews__list">
-                  <li className="reviews__item">
-                    <div className="reviews__user user">
-                      <div className="reviews__avatar-wrapper user__avatar-wrapper">
-                        <img className="reviews__avatar user__avatar" src="img/avatar-max.jpg" width="54" height="54" alt="Reviews avatar"/>
-                      </div>
-                      <span className="reviews__user-name">
-                        Max
-                      </span>
-                    </div>
-                    <div className="reviews__info">
-                      <div className="reviews__rating rating">
-                        <div className="reviews__stars rating__stars">
-                          <span style={{width: '80%'}}></span>
-                          <span className="visually-hidden">Rating</span>
-                        </div>
-                      </div>
-                      <p className="reviews__text">
-                        A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.
-                        The building is green and from 18th century.
-                      </p>
-                      <time className="reviews__time" dateTime="2019-04-24">April 2019</time>
-                    </div>
-                  </li>
-                </ul>
-                <ReviewForm />
-              </section>
+              <ReviewsList reviewsList={reviews}/>
             </div>
           </div>
-          <section className="property__map map"></section>
+          <section className="property__map map">
+            <Map centerCoordinate={mapData.city} listCoordinate={mapData.points} mapHeight="579px"/>
+          </section>
         </section>
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            <PlaceCardList cardList={nearestPlaceList} />
+            <PlaceCardList cardList={nearestPlaceList}/>
           </section>
         </div>
       </main>

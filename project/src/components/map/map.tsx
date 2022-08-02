@@ -6,10 +6,11 @@ import useMap from '../../hooks/useMap';
 
 type PropsType = {
   centerCoordinate: CityCoordinate,
-  listCoordinate: CityCoordinate[]
+  listCoordinate: CityCoordinate[],
+  mapHeight: string
 }
 
-const Map = ({centerCoordinate, listCoordinate}: PropsType) => {
+const Map = ({centerCoordinate, listCoordinate, mapHeight}: PropsType) => {
   const mapRef = useRef(null);
   const map = useMap(mapRef, centerCoordinate);
   const currentCustomIcon = leaflet.icon({
@@ -35,7 +36,7 @@ const Map = ({centerCoordinate, listCoordinate}: PropsType) => {
 
 
   return (
-    <div style={{height: '512px'}} ref={mapRef}/>
+    <div style={{height: mapHeight}} ref={mapRef}/>
   );
 };
 

@@ -21,3 +21,12 @@ export type CityCoordinate = {
   lng: number,
   zoom?: number
 }
+
+export type Review = {
+  avatar: string,
+  name: string,
+  text: string,
+  dateTime: string,
+  rating: number,
+  id: number
+}

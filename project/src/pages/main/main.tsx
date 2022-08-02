@@ -70,7 +70,7 @@ const Main = () => (
           </section>
           <div className="cities__right-section">
             <div className="cities__map map">
-              <Map centerCoordinate={mapData.city} listCoordinate={mapData.points}/>
+              <Map centerCoordinate={mapData.city} listCoordinate={mapData.points} mapHeight="512px"/>
             </div>
           </div>
         </div>
