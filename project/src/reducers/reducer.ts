@@ -1,5 +1,5 @@
 import {createReducer} from '@reduxjs/toolkit';
-import {setCurrentCity, setCurrentOffersList} from '../actions/actions';
+import {setCurrentCity, getOffersList} from '../actions/actions';
 
 const initialState = {
   city: 'Paris',
@@ -13,7 +13,7 @@ const reducer = createReducer(initialState, (builder) => {
     });
 
   builder
-    .addCase(setCurrentOffersList, (state, action) => {
+    .addCase(getOffersList, (state, action) => {
       state.offersList = action.payload;
     });
 });

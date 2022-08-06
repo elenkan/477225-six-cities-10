@@ -6,9 +6,6 @@ import {Card} from '../../types';
 import {CITIES_LIST} from '../../constants';
 import {useAppSelector, useAppDispatch} from '../../hooks/stateHooks';
 import {useEffect, useState} from 'react';
-import citiesData from '../../mocks/citiesData';
-import mapData from './../../mocks/map';
-import {setCurrentOffersList} from '../../actions/actions';
 
 const Main = () => {
   const currentCity = useAppSelector((state) => state.city);

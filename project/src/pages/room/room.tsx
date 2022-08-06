@@ -4,13 +4,12 @@ import Header from '../../components/header';
 import PlaceCardList from '../../components/place-card-list';
 import ReviewsList from '../../components/reviews-list';
 import Map from '../../components/map';
-import offers from '../../mocks/offers';
-import reviews from '../../mocks/reviews';
-import mapData from '../../mocks/map';
+import {useAppSelector} from '../../hooks/stateHooks';
 
 const Room = () => {
   const {id} = useParams();
-  const cardDetails = offers.find((item) => item.id.toString() === id) ? offers.find((item) => item.id.toString() === id) : null;
+  const offers = useAppSelector((state) => state.offersList);
+  const cardDetails = offers.find((item: Card) => item.id.toString() === id);
   const getList = (list: Card[]) => list.slice(1, 3);
   const nearestPlaceList = getList(offers);
 
@@ -48,7 +47,7 @@ const Room = () => {
                 <span>Premium</span>
               </div>
               <div className="property__name-wrapper">
-                <h1 className="property__name">{cardDetails?.name}</h1>
+                <h1 className="property__name">{cardDetails?.name || ''}</h1>
                 <button className="property__bookmark-button button" type="button">
                   <svg className="property__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>

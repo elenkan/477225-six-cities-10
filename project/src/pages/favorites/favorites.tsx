@@ -1,6 +1,5 @@
 import {Card} from './../../types';
 import Header from '../../components/header';
-import offers from '../../mocks/offers';
 import PlaceCardList from '../../components/place-card-list';
 
 const Favorites = () => {
