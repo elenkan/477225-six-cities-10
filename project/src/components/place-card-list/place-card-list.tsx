@@ -39,7 +39,7 @@ const PlaceCardList = ({cardList}: PropsType) => {
 
   return (
     <div className={classListTitle}>
-      {cardList.map((item) => <PlaceCard cardItem={item}
+      {cardList.map(item => <PlaceCard cardItem={item}
                                          classTitle={classTitle}
                                          key={item.id}
                                          setActiveCardId={setActiveCardId}

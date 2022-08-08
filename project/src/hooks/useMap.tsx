@@ -10,8 +10,8 @@ const useMap = (mapRef: MutableRefObject<HTMLElement | null>, coordinate: CityCo
     if (mapRef.current !== null && map === null && !isRenderedRef.current) {
       const instance = leaflet.map(mapRef.current, {
         center: {
-          lat: coordinate.lat,
-          lng: coordinate.lng,
+          lat: coordinate.latitude,
+          lng: coordinate.longitude,
         },
         zoom: coordinate.zoom,
       });

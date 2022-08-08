@@ -5,3 +5,11 @@ export enum AppRouteList {
   Room = '/offer/:id',
   NotFoundPage = '*'
 }
+
+export enum APIRoute {
+  offers = '/hotels',
+  favorite = '/favorite',
+  reviews = '/comments'
+}
+
+

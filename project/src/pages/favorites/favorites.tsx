@@ -1,10 +1,19 @@
-import {Card} from './../../types';
 import Header from '../../components/header';
 import PlaceCardList from '../../components/place-card-list';
+import {store} from '../../store';
+import {fetchFavoriteOffersList} from '../../actions/api-actions';
+import {useAppSelector} from '../../hooks/stateHooks';
 
 const Favorites = () => {
-  const getFavoriteCards = (list: Card[]) => list.filter((item: Card) => item.isFavorite);
-  const cards = getFavoriteCards(offers);
+  store.dispatch(fetchFavoriteOffersList());
+  const favoriteOffers = useAppSelector(state => state.favoriteOffersList);
+  const favoriteCities = new Set(favoriteOffers.map(item => item.city.name));
+  const offersListByCity = Array.from(favoriteCities).map((city: string) =>
+    ({
+      name: city,
+      list: [...favoriteOffers.filter(item => item.city.name === city)]
+    }));
+
   return (
     <div className="page">
       <Header isLoginPage={false}/>
@@ -14,27 +23,20 @@ const Favorites = () => {
           <section className="favorites">
             <h1 className="favorites__title">Saved listing</h1>
             <ul className="favorites__list">
-              <li className="favorites__locations-items">
-                <div className="favorites__locations locations locations--current">
-                  <div className="locations__item">
-                    <a className="locations__item-link" href="#">
-                      <span>Amsterdam</span>
-                    </a>
-                  </div>
-                </div>
-                <PlaceCardList cardList={cards}/>
-              </li>
-
-              <li className="favorites__locations-items">
-                <div className="favorites__locations locations locations--current">
-                  <div className="locations__item">
-                    <a className="locations__item-link" href="#">
-                      <span>Cologne</span>
-                    </a>
-                  </div>
-                </div>
-                <PlaceCardList cardList={cards}/>
-              </li>
+              {
+                offersListByCity.map(item =>(
+                  <li className="favorites__locations-items" key={item.name}>
+                    <div className="favorites__locations locations locations--current">
+                      <div className="locations__item">
+                        <a className="locations__item-link" href="#">
+                          <span>{item.name}</span>
+                        </a>
+                      </div>
+                    </div>
+                    <PlaceCardList cardList={item.list}/>
+                  </li>
+                ))
+              }
             </ul>
           </section>
         </div>

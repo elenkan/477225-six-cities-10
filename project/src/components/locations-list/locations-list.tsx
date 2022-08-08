@@ -8,7 +8,7 @@ type PropsType = {
 }
 
 const LocationsList = ({citiesList}:PropsType) => {
-  const currentCity = useAppSelector((state) => state.city);
+  const currentCity = useAppSelector(state => state.city);
   const dispatch = useAppDispatch();
   const [city, setCity] = useState<string>(currentCity);
 
@@ -21,7 +21,7 @@ const LocationsList = ({citiesList}:PropsType) => {
   return (
     <section className="locations container">
     <ul className="locations__list tabs__list">
-      {citiesList.map((item) =>
+      {citiesList.map(item =>
         <li className="locations__item" onClick={()=> {setCity(item); dispatch(setCurrentCity(item));}} key={item}>
           <a className={getTabActiveClass(item)} href="#">
             <span>{item}</span>
