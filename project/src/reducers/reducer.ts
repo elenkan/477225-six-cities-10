@@ -6,9 +6,11 @@ import {
   getReviews,
   getNearbyOffersList,
   setIsLoading,
-  getFavoriteOffersList
+  getFavoriteOffersList,
+  requireAuth, setUserInfo
 } from '../actions/actions';
 import {Card, Review} from '../types';
+import {UserData} from '../types/auth';
 
 type StateType = {
   city: string,
@@ -17,7 +19,9 @@ type StateType = {
   reviewsList: Review[],
   nearbyOffersList: Card[],
   isLoading: boolean,
-  favoriteOffersList: Card[]
+  favoriteOffersList: Card[],
+  authorizationStatus: boolean,
+  userInfo: UserData
 }
 
 const initialState: StateType = {
@@ -71,7 +75,16 @@ const initialState: StateType = {
   }],
   nearbyOffersList: [],
   isLoading: false,
-  favoriteOffersList: []
+  favoriteOffersList: [],
+  authorizationStatus: false,
+  userInfo: {
+    avatarUrl: '',
+    email: '',
+    id: null,
+    isPro: false,
+    name: '',
+    token: ''
+  }
 };
 
 const reducer = createReducer(initialState, builder => {
@@ -108,6 +121,16 @@ const reducer = createReducer(initialState, builder => {
   builder
     .addCase(getFavoriteOffersList, (state, action) => {
       state.favoriteOffersList = action.payload;
+    });
+
+  builder
+    .addCase(requireAuth, (state, action) => {
+      state.authorizationStatus = action.payload;
+    });
+
+  builder
+    .addCase(setUserInfo, (state, action) => {
+      state.userInfo = action.payload;
     });
 });
 

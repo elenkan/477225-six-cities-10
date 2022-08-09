@@ -9,7 +9,9 @@ export enum AppRouteList {
 export enum APIRoute {
   offers = '/hotels',
   favorite = '/favorite',
-  reviews = '/comments'
+  reviews = '/comments',
+  login = '/login',
+  logout = '/logout'
 }
 
 
