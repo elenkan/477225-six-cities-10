@@ -13,3 +13,7 @@ export const getNearbyOffersList = createAction('getNearbyOffersList', nearbyOff
 export const setIsLoading = createAction('setIsLoading', value => ({payload: value}));
 
 export const getFavoriteOffersList = createAction('getFavoriteOffersList', list => ({payload: list}));
+
+export const requireAuth = createAction('requireAuth', auth => ({payload: auth}));
+
+export const setUserInfo = createAction('setUserInfo', value => ({payload: value}));

@@ -2,7 +2,7 @@ import Header from '../../components/header';
 
 const RoomNotLogged = () => (
   <div className="page">
-    <Header isLoginPage={false} isLogged={false}/>
+    <Header isLoginPage={false}/>
 
     <main className="page__main page__main--property">
       <section className="property">
