@@ -8,8 +8,7 @@ type PropsType = {
   classTitle: string
 }
 
-const PlaceCard = ({cardItem: {isPremium,image,price,name,type,id }, setActiveCardId, classTitle}: PropsType) => {
-
+const PlaceCard = ({cardItem: {isPremium,previewImage,price,title,type,id }, setActiveCardId, classTitle}: PropsType) => {
   const getActiveCardId = () => setActiveCardId(id);
   const classFavoritesInfo = classTitle === 'favorites' ? 'favorites__card-info' : '';
 
@@ -21,7 +20,7 @@ const PlaceCard = ({cardItem: {isPremium,image,price,name,type,id }, setActiveCa
       </div>}
       <div className={`${classTitle}__image-wrapper place-card__image-wrapper`}>
         <a href="#">
-          <img className="place-card__image" src={image} width="260" height="200" alt="Place image"/>
+          <img className="place-card__image" src={previewImage} width="260" height="200" alt="Place image"/>
         </a>
       </div>
       <div className={`${classFavoritesInfo} place-card__info`}>
@@ -44,7 +43,7 @@ const PlaceCard = ({cardItem: {isPremium,image,price,name,type,id }, setActiveCa
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={`/offer/${id}`}>{name}</Link>
+          <Link to={`/offer/${id}`}>{title}</Link>
         </h2>
         <p className="place-card__type">{type}</p>
       </div>

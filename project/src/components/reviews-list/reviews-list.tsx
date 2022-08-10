@@ -11,7 +11,7 @@ const ReviewsList = ({reviewsList}: PropsType) => (
     <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviewsList.length}</span></h2>
     <ul className="reviews__list">
       {
-        reviewsList.map((item) => <ReviewsItem review={item} key={item.id}/>)
+        reviewsList.map(item => <ReviewsItem review={item} key={item.id}/>)
       }
     </ul>
     <ReviewForm/>

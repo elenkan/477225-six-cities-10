@@ -5,7 +5,7 @@ type PropsType = {
   review: Review
 }
 
-const ReviewsItem = ({review: {avatar, name, text, dateTime}}: PropsType) => {
+const ReviewsItem = ({review: { comment, date, user}}: PropsType) => {
 
   const getCreateReviewDateString = (dateString: string) => {
     const dateElements: string[] = dateString.split('-');
@@ -16,9 +16,9 @@ const ReviewsItem = ({review: {avatar, name, text, dateTime}}: PropsType) => {
     <li className="reviews__item">
       <div className="reviews__user user">
         <div className="reviews__avatar-wrapper user__avatar-wrapper">
-          <img className="reviews__avatar user__avatar" src={avatar} width="54" height="54" alt="Reviews avatar"/>
+          <img className="reviews__avatar user__avatar" src={user.avatarUrl} width="54" height="54" alt="Reviews avatar"/>
         </div>
-        <span className="reviews__user-name">{name}</span>
+        <span className="reviews__user-name">{user.name}</span>
       </div>
       <div className="reviews__info">
         <div className="reviews__rating rating">
@@ -27,8 +27,8 @@ const ReviewsItem = ({review: {avatar, name, text, dateTime}}: PropsType) => {
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
-        <p className="reviews__text">{text}</p>
-        <time className="reviews__time" dateTime={dateTime}>{getCreateReviewDateString(dateTime)}</time>
+        <p className="reviews__text">{comment}</p>
+        <time className="reviews__time" dateTime={date}>{getCreateReviewDateString(date)}</time>
       </div>
     </li>);
 };

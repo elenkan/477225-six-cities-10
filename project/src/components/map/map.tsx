@@ -3,6 +3,7 @@ import 'leaflet/dist/leaflet.css';
 import {useRef, useEffect} from 'react';
 import {CityCoordinate} from '../../types';
 import useMap from '../../hooks/useMap';
+import {CUSTOM_ICON} from '../../constants';
 
 type PropsType = {
   centerCoordinate: CityCoordinate,
@@ -13,26 +14,21 @@ type PropsType = {
 const Map = ({centerCoordinate, listCoordinate, mapHeight}: PropsType) => {
   const mapRef = useRef(null);
   const map = useMap(mapRef, centerCoordinate);
-  const currentCustomIcon = leaflet.icon({
-    iconUrl: 'img/pin.svg',
-    iconSize: [40, 40],
-    iconAnchor: [20, 40],
-  });
 
   useEffect(() => {
     if (map) {
-      listCoordinate.forEach((point) => {
+      listCoordinate.forEach(point => {
         leaflet
           .marker({
-            lat: point.lat,
-            lng: point.lng,
+            lat: point.latitude,
+            lng: point.longitude,
           }, {
-            icon: currentCustomIcon
+            icon: CUSTOM_ICON
           })
           .addTo(map);
       });
     }
-  }, [map, listCoordinate]);
+  }, [map, centerCoordinate, listCoordinate]);
 
 
   return (

@@ -1,13 +1,36 @@
+export type CityCoordinate = {
+  latitude: number,
+  longitude: number,
+  zoom?: number
+}
+
+export type User = {
+  avatarUrl: string,
+  id: number | null,
+  isPro: boolean,
+  name: string
+}
+
 export type Card = {
-  image: string,
-  price: number,
-  name: string,
-  type: string,
-  bookMark: boolean,
-  isPremium: boolean,
-  rating: number,
+  bedrooms: number,
+  city: {
+    location: CityCoordinate,
+    name: string
+  },
+  description: string,
+  goods: string[],
+  host: User,
+  id: number | null,
+  images: string[],
   isFavorite: boolean,
-  id: number
+  isPremium: boolean,
+  location: CityCoordinate,
+  maxAdults: number,
+  previewImage: string,
+  price: number,
+  rating: number,
+  title: string,
+  type: string
 }
 
 export type RequestData = {
@@ -15,18 +38,10 @@ export type RequestData = {
   rating: string
 }
 
-export type CityCoordinate = {
-  title: string,
-  lat: number,
-  lng: number,
-  zoom?: number
-}
-
 export type Review = {
-  avatar: string,
-  name: string,
-  text: string,
-  dateTime: string,
+  comment: string,
+  date: string,
+  id: number | null,
   rating: number,
-  id: number
+  user: User
 }
