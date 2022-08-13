@@ -7,7 +7,7 @@ import {
   getNearbyOffersList,
   setIsLoading,
   getFavoriteOffersList,
-  requireAuth, setUserInfo
+  requireAuth, setUserInfo, setIsRedirect
 } from '../actions/actions';
 import {Card, Review} from '../types';
 import {UserData} from '../types/auth';
@@ -21,7 +21,8 @@ type StateType = {
   isLoading: boolean,
   favoriteOffersList: Card[],
   authorizationStatus: boolean,
-  userInfo: UserData
+  userInfo: UserData,
+  isRedirect: boolean
 }
 
 const initialState: StateType = {
@@ -84,7 +85,8 @@ const initialState: StateType = {
     isPro: false,
     name: '',
     token: ''
-  }
+  },
+  isRedirect: false
 };
 
 const reducer = createReducer(initialState, builder => {
@@ -131,6 +133,11 @@ const reducer = createReducer(initialState, builder => {
   builder
     .addCase(setUserInfo, (state, action) => {
       state.userInfo = action.payload;
+    });
+
+  builder
+    .addCase(setIsRedirect, (state, action) => {
+      state.isRedirect = action.payload;
     });
 });
 

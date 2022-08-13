@@ -14,3 +14,33 @@ export const CUSTOM_ICON = leaflet.icon({
   iconSize: [40, 40],
   iconAnchor: [20, 40],
 });
+
+export const MIN_COMMENT_LENGTH = 50;
+
+export const RATING_DATA = [
+  {
+    title: 'perfect',
+    value: '5',
+    id: '5-stars'
+  },
+  {
+    title: 'good',
+    value: '4',
+    id: '4-stars'
+  },
+  {
+    title: 'not bad',
+    value: '3',
+    id: '3-stars'
+  },
+  {
+    title: 'badly',
+    value: '2',
+    id: '2-stars'
+  },
+  {
+    title: 'terribly',
+    value: '1',
+    id: '1-stars'
+  }
+];

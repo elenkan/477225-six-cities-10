@@ -2,7 +2,7 @@ import {createAsyncThunk} from '@reduxjs/toolkit';
 import {AxiosInstance} from 'axios';
 import {AppDispatch, State} from '../types/state';
 import {APIRoute} from '../router/enums';
-import {Card, Review} from '../types';
+import {Card, RequestData, Review} from '../types';
 import {
   getOffersList,
   getOffer,
@@ -35,9 +35,10 @@ export const fetchOffer = createAsyncThunk<void, number, {
   async (id: number | null, {dispatch, extra: api}) => {
     if (id) {
       dispatch(setIsLoading(true));
-      const {data} = await api.get<boolean>(`${APIRoute.offers}/${id}`);
-      dispatch(getOffer(data));
-      dispatch(setIsLoading(false));
+      await api.get<boolean>(`${APIRoute.offers}/${id}`).then(res => {
+        dispatch(getOffer(res.data));
+        dispatch(setIsLoading(false));
+      });
     }
   });
 
@@ -112,3 +113,15 @@ export const logout = createAsyncThunk<void, undefined, {
     removeToken();
     dispatch(requireAuth(false));
   });
+
+export const sendReview = createAsyncThunk<void, RequestData, {
+  dispatch: AppDispatch,
+  state: State,
+  extra: AxiosInstance
+}>('sendReview',
+  async ({comment, rating, offerId}, {dispatch, extra: api}) => {
+    const {data} = await api.post<Review[]>(`${APIRoute.reviews}/${offerId}`, {comment, rating});
+    dispatch(getReviews(data));
+  });
+
+

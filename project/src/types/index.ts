@@ -34,8 +34,9 @@ export type Card = {
 }
 
 export type RequestData = {
-  review: string,
-  rating: string
+  comment: string,
+  rating: string,
+  offerId: string | undefined
 }
 
 export type Review = {

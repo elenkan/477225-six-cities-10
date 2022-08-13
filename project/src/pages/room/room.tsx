@@ -5,27 +5,41 @@ import Map from '../../components/map';
 import {useAppSelector} from '../../hooks/stateHooks';
 import {store} from '../../store';
 import {fetchNearbyOffersList, fetchOffer, fetchReviews} from '../../actions/api-actions';
-import {useParams} from 'react-router-dom';
+import {useParams, useNavigate} from 'react-router-dom';
 import {useEffect, useState} from 'react';
 import {CityCoordinate} from '../../types';
 import {MAP_HEIGHT} from '../../constants';
 import Spinner from '../../components/spinner';
+import {AppRouteList} from '../../router/enums';
+import {setIsRedirect} from '../../actions/actions';
 
 const Room = () => {
   const {id} = useParams();
   const isLoading = useAppSelector(state => state.isLoading);
   const [coordinateList, setCoordinateList] = useState<CityCoordinate[]>([]);
   const [centerCoordinate, setCenterCoordinate] = useState<CityCoordinate>({latitude: 0, longitude: 0, zoom: 0});
+  const navigate = useNavigate();
+  const offer = useAppSelector(state => state.offer);
+  const isRedirect = useAppSelector(state => state.isRedirect);
 
   useEffect(() => {
-    if (id) {
-      store.dispatch(fetchOffer(Number(id)));
+    store.dispatch(fetchOffer(Number(id)));
+  }, []);
+
+  useEffect(() => {
+    if (isRedirect) {
+      navigate(AppRouteList.NotFoundPage);
+      store.dispatch(setIsRedirect(false));
+    }
+  }, [isRedirect]);
+
+  useEffect(() => {
+    if (offer.id) {
       store.dispatch(fetchReviews(Number(id)));
       store.dispatch(fetchNearbyOffersList(Number(id)));
     }
-  }, []);
+  }, [offer.id]);
 
-  const offer = useAppSelector(state => state.offer);
   const reviews = useAppSelector(state => state.reviewsList);
   const nearbyOffersList = useAppSelector(state => state.nearbyOffersList);
 
