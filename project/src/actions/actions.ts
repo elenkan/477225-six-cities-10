@@ -19,3 +19,5 @@ export const requireAuth = createAction('requireAuth', auth => ({payload: auth})
 export const setUserInfo = createAction('setUserInfo', value => ({payload: value}));
 
 export const setIsRedirect = createAction('setIsRedirect', value => ({payload: value}));
+
+export const setCardId = createAction('setCardId', value => ({payload: value}));

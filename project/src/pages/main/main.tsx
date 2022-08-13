@@ -7,25 +7,57 @@ import {CITIES_LIST, DEFAULT_MAP_HEIGHT} from '../../constants';
 import {useEffect, useState} from 'react';
 import {useAppSelector} from '../../hooks/stateHooks';
 import Spinner from '../../components/spinner';
+import SortingList from '../../components/sorting-list';
 
 const Main = () => {
   const currentCity = useAppSelector(state => state.city);
   const offersList = useAppSelector(state => state.offersList);
   const isLoading = useAppSelector(state => state.isLoading);
+  const cardId = useAppSelector(state => state.cardId);
 
   const [offersListByCity, setOffersListByCity] = useState<Card[]>([]);
   const [coordinateList, setCoordinateList] = useState<CityCoordinate[]>([]);
   const [centerCoordinate, setCenterCoordinate] = useState<CityCoordinate>({latitude: 0, longitude: 0, zoom: 0});
+  const [sortingType, setSortingType] = useState<string>('popular');
+  const [defaultList, setDefaultList] = useState<string>(JSON.stringify(offersListByCity));
+  const [selectedLocation, setSelectedLocation] = useState<CityCoordinate|null>({latitude: 0, longitude: 0, zoom: 0});
 
   useEffect(() => {
     if (offersList.length > 0) {
       const filteredList = offersList.filter(item => item.city.name === currentCity);
       setOffersListByCity(filteredList);
+      setDefaultList(JSON.stringify(filteredList));
       setCoordinateList(filteredList.map(item => item.location));
       setCenterCoordinate(filteredList[0]?.city.location);
     }
   }, [currentCity, isLoading]);
 
+  useEffect(() => {
+    if (sortingType === 'low') {
+      setOffersListByCity(offersListByCity.sort((a: Card,b: Card) => a.price - b.price));
+    }
+
+    if (sortingType === 'high') {
+      setOffersListByCity(offersListByCity.sort((a: Card,b: Card) => b.price - a.price));
+    }
+
+    if (sortingType === 'rating') {
+      setOffersListByCity(offersListByCity.sort((a: Card,b: Card) => b.rating - a.rating));
+    }
+
+    if (sortingType === 'popular') {
+      setOffersListByCity(JSON.parse(defaultList));
+    }
+  }, [sortingType]);
+
+  useEffect(() => {
+    const element = offersListByCity.find(item => item.id === cardId);
+    if (cardId && element) {
+      setSelectedLocation(element.location);
+    } else {
+      setSelectedLocation(null);
+    }
+  }, [cardId]);
 
   return (
     <div className="page page--gray page--main">
@@ -41,27 +73,16 @@ const Main = () => {
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
               <b className="places__found">{`${offersListByCity.length} places to stay in ${currentCity}`}</b>
-              <form className="places__sorting" action="#" method="get">
-                <span className="places__sorting-caption">Sort by</span>
-                <span className="places__sorting-type" tabIndex={0}>
-                  Popular
-                    <svg className="places__sorting-arrow" width="7" height="4">
-                      <use xlinkHref="#icon-arrow-select"/>
-                    </svg>
-                </span>
-                <ul className="places__options places__options--custom places__options--opened">
-                  <li className="places__option places__option--active" tabIndex={0}>Popular</li>
-                  <li className="places__option" tabIndex={0}>Price: low to high</li>
-                  <li className="places__option" tabIndex={0}>Price: high to low</li>
-                  <li className="places__option" tabIndex={0}>Top rated first</li>
-                </ul>
-              </form>
+              <SortingList action={setSortingType} />
               {!isLoading && <PlaceCardList cardList={offersListByCity}/>}
               {isLoading && <Spinner/>}
             </section>
             <div className="cities__right-section">
               <div className="cities__map map">
-                <Map centerCoordinate={centerCoordinate} listCoordinate={coordinateList} mapHeight={DEFAULT_MAP_HEIGHT}/>
+                <Map centerCoordinate={centerCoordinate}
+                     listCoordinate={coordinateList}
+                     selectedLocation={selectedLocation}
+                     mapHeight={DEFAULT_MAP_HEIGHT}/>
               </div>
             </div>
           </div>

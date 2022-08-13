@@ -3,17 +3,20 @@ import 'leaflet/dist/leaflet.css';
 import {useRef, useEffect} from 'react';
 import {CityCoordinate} from '../../types';
 import useMap from '../../hooks/useMap';
-import {CUSTOM_ICON} from '../../constants';
+import {CUSTOM_ICON, CUSTOM_ACTIVE_ICON} from '../../constants';
+import {useAppSelector} from '../../hooks/stateHooks';
 
 type PropsType = {
   centerCoordinate: CityCoordinate,
   listCoordinate: CityCoordinate[],
-  mapHeight: string
+  mapHeight: string,
+  selectedLocation?: CityCoordinate | null
 }
 
-const Map = ({centerCoordinate, listCoordinate, mapHeight}: PropsType) => {
+const Map = ({centerCoordinate, listCoordinate, mapHeight, selectedLocation}: PropsType) => {
   const mapRef = useRef(null);
   const map = useMap(mapRef, centerCoordinate);
+  const currentCity = useAppSelector(state => state.city);
 
   useEffect(() => {
     if (map) {
@@ -23,12 +26,12 @@ const Map = ({centerCoordinate, listCoordinate, mapHeight}: PropsType) => {
             lat: point.latitude,
             lng: point.longitude,
           }, {
-            icon: CUSTOM_ICON
+            icon: JSON.stringify(point) === JSON.stringify(selectedLocation) ? CUSTOM_ACTIVE_ICON : CUSTOM_ICON
           })
           .addTo(map);
       });
     }
-  }, [map, centerCoordinate, listCoordinate]);
+  }, [map, centerCoordinate, listCoordinate, selectedLocation, currentCity]);
 
 
   return (

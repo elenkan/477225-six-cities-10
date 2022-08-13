@@ -1,19 +1,21 @@
-import {Dispatch,SetStateAction} from 'react';
 import {Link} from 'react-router-dom';
 import {Card} from '../../types';
+import {store} from '../../store';
+import {setCardId} from '../../actions/actions';
 
 type PropsType = {
   cardItem: Card,
-  setActiveCardId: Dispatch<SetStateAction<null|number>>,
   classTitle: string
 }
 
-const PlaceCard = ({cardItem: {isPremium,previewImage,price,title,type,id }, setActiveCardId, classTitle}: PropsType) => {
-  const getActiveCardId = () => setActiveCardId(id);
+const PlaceCard = ({cardItem: {isPremium,previewImage,price,title,type,id}, classTitle}: PropsType) => {
   const classFavoritesInfo = classTitle === 'favorites' ? 'favorites__card-info' : '';
+  const setActiveCardId = () => {
+    store.dispatch(setCardId(id));
+  };
 
   return (
-    <article className={`${classTitle}__card place-card`} onMouseOver={getActiveCardId}>
+    <article className={`${classTitle}__card place-card`} onMouseOver={setActiveCardId} onMouseLeave={() => {store.dispatch(setCardId(null));}}>
       {isPremium &&
       <div className="place-card__mark">
         <span>Premium</span>

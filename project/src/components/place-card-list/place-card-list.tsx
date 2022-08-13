@@ -9,7 +9,6 @@ type PropsType = {
 }
 
 const PlaceCardList = ({cardList}: PropsType) => {
-  const [, setActiveCardId] = useState<null | number>(null);
   const [classTitle, setClassTitle] = useState<string>('');
   const location = useLocation();
   const classListTitle = classNames(
@@ -42,7 +41,6 @@ const PlaceCardList = ({cardList}: PropsType) => {
       {cardList.map(item => <PlaceCard cardItem={item}
                                          classTitle={classTitle}
                                          key={item.id}
-                                         setActiveCardId={setActiveCardId}
       />)}
     </div>
   );

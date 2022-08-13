@@ -15,6 +15,12 @@ export const CUSTOM_ICON = leaflet.icon({
   iconAnchor: [20, 40],
 });
 
+export const CUSTOM_ACTIVE_ICON = leaflet.icon({
+  iconUrl: 'img/pin-active.svg',
+  iconSize: [40, 40],
+  iconAnchor: [20, 40],
+});
+
 export const MIN_COMMENT_LENGTH = 50;
 
 export const RATING_DATA = [
@@ -42,5 +48,24 @@ export const RATING_DATA = [
     title: 'terribly',
     value: '1',
     id: '1-stars'
+  }
+];
+
+export const SORTING_DATA = [
+  {
+    title: 'Popular',
+    value: 'popular'
+  },
+  {
+    title: 'Price: low to high',
+    value: 'low'
+  },
+  {
+    title: 'Price: high to low',
+    value: 'high'
+  },
+  {
+    title: 'Top rated first',
+    value: 'rating'
   }
 ];
