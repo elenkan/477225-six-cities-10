@@ -1,17 +1,34 @@
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import {Card} from '../../types';
 import {store} from '../../store';
 import {setCardId} from '../../actions/actions';
+import classNames from 'classnames';
+import {setOfferFavoriteStatus} from '../../actions/api-actions';
+import {useState} from 'react';
+import {AppRouteList} from '../../router/enums';
 
 type PropsType = {
   cardItem: Card,
-  classTitle: string
+  classTitle: string,
+  isAuth: boolean
 }
 
-const PlaceCard = ({cardItem: {isPremium,previewImage,price,title,type,id}, classTitle}: PropsType) => {
+const PlaceCard = ({cardItem: {isPremium,previewImage,price,title,type,id, isFavorite, rating}, classTitle, isAuth}: PropsType) => {
   const classFavoritesInfo = classTitle === 'favorites' ? 'favorites__card-info' : '';
+  const [isFavoriteCard, setIsFavoriteCard] = useState<boolean>(isFavorite);
+  const navigate = useNavigate();
+  const ratingStyle = {width: `${Math.round(rating) * 20}%`};
   const setActiveCardId = () => {
     store.dispatch(setCardId(id));
+  };
+  const clickButtonHandler = () => {
+    if (isAuth) {
+      store.dispatch(setOfferFavoriteStatus({isFavorite: !isFavorite, id})).then(() => {
+        setIsFavoriteCard(!isFavoriteCard);
+      });
+    } else {
+      navigate(AppRouteList.Login);
+    }
   };
 
   return (
@@ -31,7 +48,13 @@ const PlaceCard = ({cardItem: {isPremium,previewImage,price,title,type,id}, clas
             <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button className="place-card__bookmark-button place-card__bookmark-button--active button" type="button">
+          <button className={classNames({
+            'place-card__bookmark-button': true,
+            'button': true,
+            'place-card__bookmark-button--active': isFavoriteCard,
+          })}
+                  type="button"
+           onClick={clickButtonHandler}>
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"/>
             </svg>
@@ -40,7 +63,7 @@ const PlaceCard = ({cardItem: {isPremium,previewImage,price,title,type,id}, clas
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{width: '80 %'}}/>
+            <span style={ratingStyle}/>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>

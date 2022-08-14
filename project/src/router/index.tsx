@@ -9,12 +9,12 @@ import PrivateRoute from './private-route/';
 import {useAppSelector} from '../hooks/stateHooks';
 
 const AppRouter = () => {
-  const authorizationStatus = useAppSelector(state => state.authorizationStatus);
+  const authorizationStatus = useAppSelector(state => state.authorizationStatus) || !!localStorage.getItem('six-cities-token');
   return (
     <BrowserRouter>
       <Routes>
         <Route path={AppRouteList.Main} element={<Main/>}/>
-        <Route path={AppRouteList.Login} element={<Login/>}/>
+        <Route path={AppRouteList.Login} element={<Login isAuth={authorizationStatus}/>}/>
         <Route path={AppRouteList.Favorites} element={<PrivateRoute isAuth={authorizationStatus}><Favorites/></PrivateRoute>}/>
         <Route path={AppRouteList.Room} element={<Room/>}/>
         <Route path={AppRouteList.NotFoundPage} element={<NotFoundPage/>}/>

@@ -1,17 +1,26 @@
 import Header from '../../components/header';
-import {ChangeEvent, FormEvent, useState} from 'react';
+import {ChangeEvent, FormEvent, useEffect, useState} from 'react';
 import {AuthData} from '../../types/auth';
 import {store} from '../../store';
 import {login} from '../../actions/api-actions';
 import {useNavigate} from 'react-router-dom';
 
-const Login = () => {
+type PropsType = {
+  isAuth: boolean
+}
+
+const Login = ({isAuth}: PropsType) => {
   const [formData, setFormData] = useState<AuthData>({
     email: '',
     password: ''
   });
-
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isAuth) {
+      navigate('/', { replace: true });
+    }
+  },[]);
 
   const fieldChangeHandle = (evt: ChangeEvent<HTMLInputElement>) => {
     const {name, value} = evt.target;

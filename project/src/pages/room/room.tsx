@@ -99,10 +99,10 @@ const Room = () => {
                       {offer.type}
                     </li>
                     <li className="property__feature property__feature--bedrooms">
-                      {offer.bedrooms}
+                      {offer.bedrooms} Bedrooms
                     </li>
                     <li className="property__feature property__feature--adults">
-                      Max {offer.maxAdults}
+                      Max {offer.maxAdults} adults
                     </li>
                   </ul>
                   <div className="property__price">

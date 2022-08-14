@@ -11,14 +11,16 @@ type HeaderProps = {
 const Header = ({isLoginPage}: HeaderProps) => {
   const authorizationStatus = useAppSelector(state => state.authorizationStatus);
   const userInfo = useAppSelector(state => state.userInfo);
+  const favoriteList = useAppSelector(state => state.favoriteOffersList);
   const clickHandler = () => store.dispatch(logout());
+
 
   return (
     <header className="header">
       <div className="container">
         <div className="header__wrapper">
           <div className="header__left">
-            <Link className="header__logo-link" to="/">
+            <Link className="header__logo-link" to={AppRouteList.Main}>
               <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41"/>
             </Link>
           </div>
@@ -31,8 +33,10 @@ const Header = ({isLoginPage}: HeaderProps) => {
                        style={{'backgroundImage': authorizationStatus ? `url(${userInfo.avatarUrl})` : 'url(../img/avatar.svg)'}}/>
                   {authorizationStatus &&
                   <div>
-                    <span className="header__user-name user__name">{userInfo.name}</span>
-                    <span className="header__favorite-count">3</span>
+                    <Link className="header__logo-link" to={AppRouteList.Favorites}>
+                      <span className="header__user-name user__name">{userInfo.name}</span>
+                    </Link>
+                    <span className="header__favorite-count">{favoriteList.length}</span>
                   </div>}
                   {!authorizationStatus &&
                   <Link to={AppRouteList.Login}>

@@ -124,4 +124,14 @@ export const sendReview = createAsyncThunk<void, RequestData, {
     dispatch(getReviews(data));
   });
 
+export const setOfferFavoriteStatus = createAsyncThunk<void,{isFavorite: boolean, id: number|null} , {
+  dispatch: AppDispatch,
+  state: State,
+  extra: AxiosInstance
+}>('setOfferFavoriteStatus',
+  async ({isFavorite, id}, {dispatch, extra: api}) => {
+    await api.post(`${APIRoute.favorite}/${id}/${Number(isFavorite)}`).then(() => {
+      dispatch(fetchFavoriteOffersList());
+    });
+  });
 
