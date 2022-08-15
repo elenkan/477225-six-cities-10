@@ -3,7 +3,6 @@ import {useLocation} from 'react-router-dom';
 import {Card} from '../../types';
 import PlaceCard from '../place-card';
 import classNames from 'classnames';
-import {useAppSelector} from '../../hooks/stateHooks';
 
 type PropsType = {
   cardList: Card[]
@@ -11,7 +10,6 @@ type PropsType = {
 
 const PlaceCardList = ({cardList}: PropsType) => {
   const [classTitle, setClassTitle] = useState<string>('');
-  const authorizationStatus = useAppSelector(state => state.authorizationStatus);
   const location = useLocation();
   const classListTitle = classNames(
     {
@@ -41,7 +39,6 @@ const PlaceCardList = ({cardList}: PropsType) => {
   return (
     <div className={classListTitle}>
       {cardList.map(item => <PlaceCard cardItem={item}
-                                       isAuth={authorizationStatus}
                                        classTitle={classTitle}
                                        key={item.id}
       />)}

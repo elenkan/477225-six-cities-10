@@ -27,7 +27,15 @@ const useMap = (mapRef: MutableRefObject<HTMLElement | null>, coordinate: CityCo
       setMap(instance);
       isRenderedRef.current = true;
     }
-  }, [mapRef, map, coordinate]);
+  }, [mapRef, map]);
+
+  useEffect(() => {
+    map?.panTo({
+      lat: coordinate.latitude,
+      lng: coordinate.longitude,
+    });
+  }, [coordinate]);
+
   return map;
 };
 

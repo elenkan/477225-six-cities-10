@@ -8,10 +8,12 @@ import {fetchNearbyOffersList, fetchOffer, fetchReviews} from '../../actions/api
 import {useParams, useNavigate} from 'react-router-dom';
 import {useEffect, useState} from 'react';
 import {CityCoordinate} from '../../types';
-import {MAP_HEIGHT} from '../../constants';
+import {MAP_HEIGHT, REVIEWS_LIMIT_COUNT} from '../../constants';
 import Spinner from '../../components/spinner';
 import {AppRouteList} from '../../router/enums';
 import {setIsRedirect} from '../../actions/actions';
+import RatingStars from '../../components/rating-stars';
+import FavoriteButton from '../../components/favorite-button';
 
 const Room = () => {
   const {id} = useParams();
@@ -45,7 +47,9 @@ const Room = () => {
 
   useEffect(() => {
     if (nearbyOffersList.length > 0) {
-      setCoordinateList(nearbyOffersList.map(item => item.location));
+      const nearbyList = nearbyOffersList.map(item => item.location);
+      nearbyList.push(offer.location);
+      setCoordinateList(nearbyList);
       setCenterCoordinate(nearbyOffersList[0].city.location);
     }
   }, [nearbyOffersList]);
@@ -80,20 +84,9 @@ const Room = () => {
                   }
                   <div className="property__name-wrapper">
                     <h1 className="property__name">{offer.title}</h1>
-                    <button className="property__bookmark-button button" type="button">
-                      <svg className="property__bookmark-icon" width="31" height="33">
-                        <use xlinkHref="#icon-bookmark"/>
-                      </svg>
-                      <span className="visually-hidden">To bookmarks</span>
-                    </button>
+                    <FavoriteButton isFavorite={offer.isFavorite} id={offer.id} />
                   </div>
-                  <div className="property__rating rating">
-                    <div className="property__stars rating__stars">
-                      <span style={{width: '80%'}}/>
-                      <span className="visually-hidden">Rating</span>
-                    </div>
-                    <span className="property__rating-value rating__value">{offer.rating}</span>
-                  </div>
+                  <RatingStars rating={offer.rating} />
                   <ul className="property__features">
                     <li className="property__feature property__feature--entire">
                       {offer.type}
@@ -121,7 +114,7 @@ const Room = () => {
                   <div className="property__host">
                     <h2 className="property__host-title">Meet the host</h2>
                     <div className="property__host-user user">
-                      <div className="property__avatar-wrapper property__avatar-wrapper--pro user__avatar-wrapper">
+                      <div className={`property__avatar-wrapper ${offer.host.isPro && 'property__avatar-wrapper--pro'} user__avatar-wrapper`}>
                         <img className="property__avatar user__avatar"
                              src={offer.host.avatarUrl}
                              width="74"
@@ -144,11 +137,13 @@ const Room = () => {
                       </p>
                     </div>
                   </div>
-                  <ReviewsList reviewsList={reviews}/>
+                  <ReviewsList reviewsList={reviews.length > REVIEWS_LIMIT_COUNT
+                    ? reviews.slice(0,REVIEWS_LIMIT_COUNT)
+                    : reviews}/>
                 </div>
               </div>
               <section className="property__map map">
-                <Map centerCoordinate={centerCoordinate} listCoordinate={coordinateList} mapHeight={MAP_HEIGHT}/>
+                <Map centerCoordinate={centerCoordinate} listCoordinate={coordinateList} selectedLocation={offer.location} mapHeight={MAP_HEIGHT}/>
               </section>
             </section>
             <div className="container">

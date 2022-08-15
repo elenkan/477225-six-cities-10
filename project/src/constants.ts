@@ -69,3 +69,5 @@ export const SORTING_DATA = [
     value: 'rating'
   }
 ];
+
+export const REVIEWS_LIMIT_COUNT = 10;
