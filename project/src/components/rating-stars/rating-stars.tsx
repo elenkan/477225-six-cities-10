@@ -1,19 +1,17 @@
-import {useLocation} from 'react-router-dom';
-
 type PropsType = {
-  rating: number
+  rating: number,
+  classTitle: string
 }
 
-const RatingStars = ({rating}: PropsType) => {
+const RatingStars = ({rating, classTitle}: PropsType) => {
   const ratingStyle = {width: `${Math.round(rating) * 20}%`};
-  const isOfferPage = useLocation().pathname.includes('offer');
   return (
-    <div className={`${isOfferPage ? 'property__rating' : 'place-card__rating'} rating`}>
-      <div className={`${isOfferPage ? 'property__stars' : 'place-card__stars'} rating__stars`}>
+    <div className={`${classTitle}__rating rating`}>
+      <div className={`${classTitle}__stars rating__stars`}>
         <span style={ratingStyle}/>
         <span className="visually-hidden">Rating</span>
       </div>
-      {isOfferPage && <span className="property__rating-value rating__value">{rating}</span>}
+      {classTitle === 'property' && <span className="property__rating-value rating__value">{rating}</span>}
     </div>
   );
 };

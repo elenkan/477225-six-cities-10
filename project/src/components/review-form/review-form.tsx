@@ -1,13 +1,20 @@
-import {FormEvent, Fragment, useEffect, useState} from 'react';
+import {FormEvent, Fragment, useEffect, useState, useRef} from 'react';
 import {RequestData} from '../../types';
 import {ChangeEvent} from 'react';
 import {useParams} from 'react-router-dom';
 import {store} from '../../store';
 import {sendReview} from '../../actions/api-actions';
-import {MIN_COMMENT_LENGTH, RATING_DATA} from '../../constants';
+import {MIN_COMMENT_LENGTH, RATING_DATA, MAX_COMMENT_LENGTH} from '../../constants';
+import {useAppSelector} from '../../hooks/stateHooks';
+import {setResetForm} from '../../actions/actions';
 
 const ReviewForm = () => {
   const {id} = useParams();
+  const reviewForm = useRef<HTMLFormElement>(null);
+  const isDisabledField = useAppSelector(state => state.isDisabledField);
+  const resetForm = useAppSelector(state => state.resetForm);
+  const [isDisable, setIsDisable] = useState<boolean>(false);
+
   const [formData, setFormData] = useState<RequestData>({
     comment: '',
     rating: '',
@@ -23,17 +30,32 @@ const ReviewForm = () => {
 
   useEffect(() => {
     setIsDisabledButton(!(formData.rating && formData.comment.length > MIN_COMMENT_LENGTH));
-  }, [formData]);
+  }, [formData, resetForm]);
+
+  useEffect(() => {
+    setIsDisable(isDisabledField);
+  }, [isDisabledField]);
 
   const submitHandle = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
     store.dispatch(sendReview(formData)).then(() => {
-      evt.currentTarget.reset();
+      setIsDisable(false);
+      // setIsDisabledButton(false);
+      if (resetForm) {
+        // reviewForm?.current?.reset();
+        setFormData({
+          comment: '',
+          rating: '',
+          offerId: id
+        });
+        store.dispatch(setResetForm(false));
+        setIsDisabledButton(true);
+      }
     });
   };
 
   return (
-    <form className="reviews__form form" onSubmit={submitHandle}>
+    <form className="reviews__form form" onSubmit={submitHandle} ref={reviewForm}>
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
       <div className="reviews__rating-form form__rating">
         {
@@ -44,6 +66,7 @@ const ReviewForm = () => {
                      value={rating.value}
                      id={rating.id}
                      type="radio"
+                     disabled={isDisable}
                      onChange={fieldChangeHandle}/>
               <label htmlFor={rating.id}
                      className="reviews__rating-label form__rating-label"
@@ -59,6 +82,8 @@ const ReviewForm = () => {
       <textarea className="reviews__textarea form__textarea"
                 id="review"
                 name="comment"
+                maxLength={MAX_COMMENT_LENGTH}
+                disabled={isDisable}
                 placeholder="Tell how was your stay, what you like and what can be improved"
                 onChange={fieldChangeHandle}/>
       <div className="reviews__button-wrapper">
@@ -68,7 +93,7 @@ const ReviewForm = () => {
         </p>
         <button className="reviews__submit form__submit button"
                 type="submit"
-                disabled={isDisabledButton}>Submit
+                disabled={isDisabledButton || isDisable}>Submit
         </button>
       </div>
     </form>

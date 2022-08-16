@@ -3,6 +3,7 @@ import {useAppSelector} from '../../hooks/stateHooks';
 import {AppRouteList} from '../../router/enums';
 import {store} from '../../store';
 import {logout} from '../../actions/api-actions';
+import {memo} from 'react';
 
 type HeaderProps = {
   isLoginPage: boolean
@@ -58,4 +59,4 @@ const Header = ({isLoginPage}: HeaderProps) => {
   );
 };
 
-export default Header;
+export default memo(Header);

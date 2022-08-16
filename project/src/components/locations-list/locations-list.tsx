@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import {useState} from 'react';
+import {useState, memo} from 'react';
 import {useAppDispatch, useAppSelector} from '../../hooks/stateHooks';
 import {setCurrentCity} from '../../actions/actions';
 
@@ -32,4 +32,4 @@ const LocationsList = ({citiesList}:PropsType) => {
   );
 };
 
-export default LocationsList;
+export default memo(LocationsList);

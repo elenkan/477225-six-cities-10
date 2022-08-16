@@ -23,6 +23,8 @@ export const CUSTOM_ACTIVE_ICON = leaflet.icon({
 
 export const MIN_COMMENT_LENGTH = 50;
 
+export const MAX_COMMENT_LENGTH = 300;
+
 export const RATING_DATA = [
   {
     title: 'perfect',

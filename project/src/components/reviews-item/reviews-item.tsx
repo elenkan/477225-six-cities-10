@@ -1,11 +1,12 @@
 import {Review} from '../../types';
 import {MONTHS} from '../../constants';
+import RatingStars from '../rating-stars';
 
 type PropsType = {
   review: Review
 }
 
-const ReviewsItem = ({review: { comment, date, user}}: PropsType) => {
+const ReviewsItem = ({review: { comment, date, user, rating}}: PropsType) => {
 
   const getCreateReviewDateString = (dateString: string) => {
     const dateElements: string[] = dateString.split('-');
@@ -21,12 +22,7 @@ const ReviewsItem = ({review: { comment, date, user}}: PropsType) => {
         <span className="reviews__user-name">{user.name}</span>
       </div>
       <div className="reviews__info">
-        <div className="reviews__rating rating">
-          <div className="reviews__stars rating__stars">
-            <span style={{width: '80%'}}/>
-            <span className="visually-hidden">Rating</span>
-          </div>
-        </div>
+        <RatingStars rating={rating} classTitle={'reviews'} />
         <p className="reviews__text">{comment}</p>
         <time className="reviews__time" dateTime={date}>{getCreateReviewDateString(date)}</time>
       </div>

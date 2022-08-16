@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useMemo} from 'react';
 import {useLocation} from 'react-router-dom';
 import {Card} from '../../types';
 import PlaceCard from '../place-card';
@@ -11,6 +11,7 @@ type PropsType = {
 const PlaceCardList = ({cardList}: PropsType) => {
   const [classTitle, setClassTitle] = useState<string>('');
   const location = useLocation();
+  const memoCardList = useMemo(() => cardList,[cardList]);
   const classListTitle = classNames(
     {
       'favorites__places': location.pathname.includes('favorites'),
@@ -38,7 +39,7 @@ const PlaceCardList = ({cardList}: PropsType) => {
 
   return (
     <div className={classListTitle}>
-      {cardList.map(item => <PlaceCard cardItem={item}
+      {memoCardList.map(item => <PlaceCard cardItem={item}
                                        classTitle={classTitle}
                                        key={item.id}
       />)}

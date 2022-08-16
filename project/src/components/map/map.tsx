@@ -35,7 +35,7 @@ const Map = ({centerCoordinate, listCoordinate, mapHeight, selectedLocation}: Pr
 
 
   return (
-    <div style={{height: mapHeight}} ref={mapRef}/>
+    <div style={{minHeight: mapHeight, height: '100%'}} ref={mapRef}/>
   );
 };
 

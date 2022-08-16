@@ -21,3 +21,7 @@ export const setUserInfo = createAction('setUserInfo', value => ({payload: value
 export const setIsRedirect = createAction('setIsRedirect', value => ({payload: value}));
 
 export const setCardId = createAction('setCardId', value => ({payload: value}));
+
+export const setIsDisabledField = createAction('setIsDisabledField', value => ({payload: value}));
+
+export const setResetForm = createAction('setResetForm', value => ({payload: value}));

@@ -10,7 +10,7 @@ import {
   getNearbyOffersList,
   setIsLoading,
   getFavoriteOffersList,
-  requireAuth, setUserInfo
+  requireAuth, setUserInfo, setIsDisabledField, setResetForm
 } from './actions';
 import {AuthData, UserData} from '../types/auth';
 import {removeToken, saveToken} from '../services/token';
@@ -88,6 +88,7 @@ export const checkAuth = createAsyncThunk<void, undefined, {
       dispatch(setUserInfo(data));
     } catch {
       dispatch(requireAuth(false));
+      removeToken();
     }
   });
 
@@ -120,8 +121,11 @@ export const sendReview = createAsyncThunk<void, RequestData, {
   extra: AxiosInstance
 }>('sendReview',
   async ({comment, rating, offerId}, {dispatch, extra: api}) => {
+    dispatch(setIsDisabledField(true));
     const {data} = await api.post<Review[]>(`${APIRoute.reviews}/${offerId}`, {comment, rating});
     dispatch(getReviews(data));
+    dispatch(setResetForm(true));
+    dispatch(setIsDisabledField(false));
   });
 
 export const setOfferFavoriteStatus = createAsyncThunk<void,{isFavorite: boolean, id: number|null} , {

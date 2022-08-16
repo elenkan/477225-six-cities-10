@@ -4,6 +4,11 @@ import {AuthData} from '../../types/auth';
 import {store} from '../../store';
 import {login} from '../../actions/api-actions';
 import {useNavigate} from 'react-router-dom';
+import {CITIES_LIST} from '../../constants';
+import {setCurrentCity} from '../../actions/actions';
+import {useAppSelector} from '../../hooks/stateHooks';
+import {Link} from 'react-router-dom';
+import {AppRouteList} from '../../router/enums';
 
 type PropsType = {
   isAuth: boolean
@@ -15,8 +20,15 @@ const Login = ({isAuth}: PropsType) => {
     password: ''
   });
   const navigate = useNavigate();
+  const currentCity = useAppSelector(state => state.city);
+
+  const getRandomCity = (min: number, max: number): string => {
+    const randomNumber = Math.round(min + Math.random() * (max - min));
+    return CITIES_LIST[randomNumber];
+  };
 
   useEffect(() => {
+    store.dispatch(setCurrentCity(getRandomCity(0,CITIES_LIST.length - 1)));
     if (isAuth) {
       navigate('/', { replace: true });
     }
@@ -66,9 +78,9 @@ const Login = ({isAuth}: PropsType) => {
           </section>
           <section className="locations locations--login locations--current">
             <div className="locations__item">
-              <a className="locations__item-link" href="#">
-                <span>Amsterdam</span>
-              </a>
+              <Link className="locations__item-link" to={AppRouteList.Main}>
+                <span>{currentCity}</span>
+              </Link>
             </div>
           </section>
         </div>

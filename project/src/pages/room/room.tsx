@@ -7,13 +7,14 @@ import {store} from '../../store';
 import {fetchNearbyOffersList, fetchOffer, fetchReviews} from '../../actions/api-actions';
 import {useParams, useNavigate} from 'react-router-dom';
 import {useEffect, useState} from 'react';
-import {CityCoordinate} from '../../types';
+import {CityCoordinate, Review} from '../../types';
 import {MAP_HEIGHT, REVIEWS_LIMIT_COUNT} from '../../constants';
 import Spinner from '../../components/spinner';
 import {AppRouteList} from '../../router/enums';
 import {setIsRedirect} from '../../actions/actions';
 import RatingStars from '../../components/rating-stars';
 import FavoriteButton from '../../components/favorite-button';
+import moment from 'moment';
 
 const Room = () => {
   const {id} = useParams();
@@ -21,6 +22,7 @@ const Room = () => {
   const [coordinateList, setCoordinateList] = useState<CityCoordinate[]>([]);
   const [centerCoordinate, setCenterCoordinate] = useState<CityCoordinate>({latitude: 0, longitude: 0, zoom: 0});
   const navigate = useNavigate();
+  const [sortedReviewList, setSortedReviewList] = useState<Review[]>([]);
   const offer = useAppSelector(state => state.offer);
   const isRedirect = useAppSelector(state => state.isRedirect);
 
@@ -44,6 +46,13 @@ const Room = () => {
 
   const reviews = useAppSelector(state => state.reviewsList);
   const nearbyOffersList = useAppSelector(state => state.nearbyOffersList);
+
+  useEffect(() => {
+    if (reviews.length) {
+      const sortedReviews = [...reviews].sort((a,b) => moment(b.date, 'DD-MM-YYYY').diff(moment(a.date,'DD-MM-YYYY')));
+      setSortedReviewList(sortedReviews);
+    }
+  },[reviews]);
 
   useEffect(() => {
     if (nearbyOffersList.length > 0) {
@@ -86,7 +95,7 @@ const Room = () => {
                     <h1 className="property__name">{offer.title}</h1>
                     <FavoriteButton isFavorite={offer.isFavorite} id={offer.id} />
                   </div>
-                  <RatingStars rating={offer.rating} />
+                  <RatingStars rating={offer.rating} classTitle="property"/>
                   <ul className="property__features">
                     <li className="property__feature property__feature--entire">
                       {offer.type}
@@ -137,9 +146,10 @@ const Room = () => {
                       </p>
                     </div>
                   </div>
-                  <ReviewsList reviewsList={reviews.length > REVIEWS_LIMIT_COUNT
-                    ? reviews.slice(0,REVIEWS_LIMIT_COUNT)
-                    : reviews}/>
+                  <ReviewsList reviewsList={sortedReviewList.length > REVIEWS_LIMIT_COUNT
+                    ? sortedReviewList.slice(0,REVIEWS_LIMIT_COUNT)
+                    : sortedReviewList}
+                  />
                 </div>
               </div>
               <section className="property__map map">

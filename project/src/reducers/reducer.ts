@@ -7,7 +7,9 @@ import {
   getNearbyOffersList,
   setIsLoading,
   getFavoriteOffersList,
-  requireAuth, setUserInfo, setIsRedirect, setCardId
+  requireAuth, setUserInfo, setIsRedirect, setCardId,
+  setIsDisabledField,
+  setResetForm
 } from '../actions/actions';
 import {Card, Review} from '../types';
 import {UserData} from '../types/auth';
@@ -23,7 +25,9 @@ type StateType = {
   authorizationStatus: boolean,
   userInfo: UserData,
   isRedirect: boolean,
-  cardId: null | number
+  cardId: null | number,
+  isDisabledField: boolean,
+  resetForm: boolean
 }
 
 const initialState: StateType = {
@@ -88,7 +92,9 @@ const initialState: StateType = {
     token: ''
   },
   isRedirect: false,
-  cardId: null
+  cardId: null,
+  isDisabledField: false,
+  resetForm: false
 };
 
 const reducer = createReducer(initialState, builder => {
@@ -145,6 +151,16 @@ const reducer = createReducer(initialState, builder => {
   builder
     .addCase(setCardId, (state, action) => {
       state.cardId = action.payload;
+    });
+
+  builder
+    .addCase(setIsDisabledField, (state, action) => {
+      state.isDisabledField = action.payload;
+    });
+
+  builder
+    .addCase(setResetForm, (state, action) => {
+      state.resetForm = action.payload;
     });
 });
 

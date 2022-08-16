@@ -4,6 +4,7 @@ import {store} from '../../store';
 import {setCardId} from '../../actions/actions';
 import RatingStars from '../rating-stars';
 import FavoriteButton from '../favorite-button';
+import {memo} from 'react';
 
 type PropsType = {
   cardItem: Card,
@@ -35,7 +36,7 @@ const PlaceCard = ({cardItem: {isPremium,previewImage,price,title,type,id, isFav
           </div>
           <FavoriteButton isFavorite={isFavorite} id={id} />
         </div>
-        <RatingStars rating={rating} />
+        <RatingStars rating={rating} classTitle="place-card"/>
         <h2 className="place-card__name">
           <Link to={`/offer/${id}`}>{title}</Link>
         </h2>
@@ -45,4 +46,4 @@ const PlaceCard = ({cardItem: {isPremium,previewImage,price,title,type,id, isFav
   );
 };
 
-export default PlaceCard;
+export default memo(PlaceCard);
