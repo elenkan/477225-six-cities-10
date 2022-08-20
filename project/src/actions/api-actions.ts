@@ -10,7 +10,7 @@ import {
   getNearbyOffersList,
   setIsLoading,
   getFavoriteOffersList,
-  requireAuth, setUserInfo, setIsDisabledField, setResetForm
+  requireAuth, setUserInfo, setIsDisabledField
 } from './actions';
 import {AuthData, UserData} from '../types/auth';
 import {removeToken, saveToken} from '../services/token';
@@ -123,8 +123,8 @@ export const sendReview = createAsyncThunk<void, RequestData, {
   async ({comment, rating, offerId}, {dispatch, extra: api}) => {
     dispatch(setIsDisabledField(true));
     const {data} = await api.post<Review[]>(`${APIRoute.reviews}/${offerId}`, {comment, rating});
+    localStorage.setItem('resetForm', 'true');
     dispatch(getReviews(data));
-    dispatch(setResetForm(true));
     dispatch(setIsDisabledField(false));
   });
 

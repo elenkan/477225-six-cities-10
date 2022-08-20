@@ -3,19 +3,19 @@ import {store} from '../../store';
 import {setOfferFavoriteStatus} from '../../actions/api-actions';
 import {AppRouteList} from '../../router/enums';
 import {useState} from 'react';
-import {useLocation, useNavigate} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import {useAppSelector} from '../../hooks/stateHooks';
 
 type PropsType = {
   isFavorite: boolean,
-  id: number | null
+  id: number | null,
+  isOfferPage?: boolean
 }
 
-const FavoriteButton = ({isFavorite, id}: PropsType) => {
+const FavoriteButton = ({isFavorite, isOfferPage, id}: PropsType) => {
   const [isFavoriteCard, setIsFavoriteCard] = useState<boolean>(isFavorite);
   const navigate = useNavigate();
   const isAuth = useAppSelector(state => state.authorizationStatus);
-  const isOfferPage = useLocation().pathname.includes('offer');
   const buttonClass = classNames({
     'place-card__bookmark-button': !isOfferPage,
     'property__bookmark-button': isOfferPage,
@@ -38,7 +38,7 @@ const FavoriteButton = ({isFavorite, id}: PropsType) => {
     <button className={buttonClass}
             type="button"
             onClick={clickButtonHandler}>
-      <svg className="place-card__bookmark-icon"
+      <svg className={`${isOfferPage ? 'property' : 'place-card'}__bookmark-icon`}
            width={isOfferPage ? '31' : '18'}
            height={isOfferPage ? '33' : '19'}>
         <use xlinkHref="#icon-bookmark"/>

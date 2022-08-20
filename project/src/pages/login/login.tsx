@@ -9,6 +9,7 @@ import {setCurrentCity} from '../../actions/actions';
 import {useAppSelector} from '../../hooks/stateHooks';
 import {Link} from 'react-router-dom';
 import {AppRouteList} from '../../router/enums';
+import {toast} from 'react-toastify';
 
 type PropsType = {
   isAuth: boolean
@@ -21,6 +22,7 @@ const Login = ({isAuth}: PropsType) => {
   });
   const navigate = useNavigate();
   const currentCity = useAppSelector(state => state.city);
+  const passwordTest = /[0-9]{1,}[A-Za-zА-Яа-яЁё]{1,}/;
 
   const getRandomCity = (min: number, max: number): string => {
     const randomNumber = Math.round(min + Math.random() * (max - min));
@@ -41,9 +43,13 @@ const Login = ({isAuth}: PropsType) => {
 
   const submitHandle = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-    store.dispatch(login(formData)).then(() => {
-      navigate('/', { replace: true });
-    });
+    if (formData.password.match(passwordTest)) {
+      store.dispatch(login(formData)).then(() => {
+        navigate('/', { replace: true });
+      });
+    } else {
+      toast.error('The password must consist of at least one letter and a number');
+    }
   };
 
   return (

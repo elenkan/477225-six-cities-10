@@ -1,4 +1,4 @@
-import {FormEvent, Fragment, useEffect, useState, useRef} from 'react';
+import {FormEvent, Fragment, useEffect, useState} from 'react';
 import {RequestData} from '../../types';
 import {ChangeEvent} from 'react';
 import {useParams} from 'react-router-dom';
@@ -6,13 +6,10 @@ import {store} from '../../store';
 import {sendReview} from '../../actions/api-actions';
 import {MIN_COMMENT_LENGTH, RATING_DATA, MAX_COMMENT_LENGTH} from '../../constants';
 import {useAppSelector} from '../../hooks/stateHooks';
-import {setResetForm} from '../../actions/actions';
 
 const ReviewForm = () => {
   const {id} = useParams();
-  const reviewForm = useRef<HTMLFormElement>(null);
   const isDisabledField = useAppSelector(state => state.isDisabledField);
-  const resetForm = useAppSelector(state => state.resetForm);
   const [isDisable, setIsDisable] = useState<boolean>(false);
 
   const [formData, setFormData] = useState<RequestData>({
@@ -30,7 +27,7 @@ const ReviewForm = () => {
 
   useEffect(() => {
     setIsDisabledButton(!(formData.rating && formData.comment.length > MIN_COMMENT_LENGTH));
-  }, [formData, resetForm]);
+  }, [formData]);
 
   useEffect(() => {
     setIsDisable(isDisabledField);
@@ -40,22 +37,20 @@ const ReviewForm = () => {
     evt.preventDefault();
     store.dispatch(sendReview(formData)).then(() => {
       setIsDisable(false);
-      // setIsDisabledButton(false);
-      if (resetForm) {
-        // reviewForm?.current?.reset();
+      if (localStorage.getItem('resetForm')) {
+        setIsDisabledButton(true);
         setFormData({
           comment: '',
           rating: '',
           offerId: id
         });
-        store.dispatch(setResetForm(false));
-        setIsDisabledButton(true);
+        localStorage.removeItem('resetForm');
       }
     });
   };
 
   return (
-    <form className="reviews__form form" onSubmit={submitHandle} ref={reviewForm}>
+    <form className="reviews__form form" onSubmit={submitHandle}>
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
       <div className="reviews__rating-form form__rating">
         {
@@ -66,6 +61,7 @@ const ReviewForm = () => {
                      value={rating.value}
                      id={rating.id}
                      type="radio"
+                     checked={rating.value === formData.rating}
                      disabled={isDisable}
                      onChange={fieldChangeHandle}/>
               <label htmlFor={rating.id}
@@ -84,6 +80,7 @@ const ReviewForm = () => {
                 name="comment"
                 maxLength={MAX_COMMENT_LENGTH}
                 disabled={isDisable}
+                value={formData.comment}
                 placeholder="Tell how was your stay, what you like and what can be improved"
                 onChange={fieldChangeHandle}/>
       <div className="reviews__button-wrapper">

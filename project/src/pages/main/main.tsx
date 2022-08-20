@@ -42,7 +42,7 @@ const Main = () => {
       setCenterCoordinate(filteredList[0]?.city.location);
       setMessage(false);
     }
-    if (offersList.length && isLoading) {
+    if (!offersList.length && isLoading) {
       setMessage(true);
     }
   }, [currentCity, isLoading]);

@@ -93,7 +93,7 @@ const Room = () => {
                   }
                   <div className="property__name-wrapper">
                     <h1 className="property__name">{offer.title}</h1>
-                    <FavoriteButton isFavorite={offer.isFavorite} id={offer.id} />
+                    <FavoriteButton isFavorite={offer.isFavorite} id={offer.id} isOfferPage/>
                   </div>
                   <RatingStars rating={offer.rating} classTitle="property"/>
                   <ul className="property__features">
