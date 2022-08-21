@@ -1,5 +1,5 @@
 import Header from '../../components/header';
-import PlaceCardList from '../../components/place-card-list';
+import PlaceCardsList from '../../components/place-cards-list';
 import Map from './../../components/map';
 import LocationsList from '../../components/locations-list';
 import {Card, CityCoordinate} from '../../types';
@@ -10,7 +10,7 @@ import Spinner from '../../components/spinner';
 import SortingList from '../../components/sorting-list';
 import NoOffersMessage from '../../components/no-offers-message';
 import {store} from '../../store';
-import {fetchFavoriteOffersList, fetchOfferList} from '../../actions/api-actions';
+import {fetchOfferList} from '../../actions/api-actions';
 
 const Main = () => {
   const currentCity = useAppSelector(state => state.city);
@@ -19,7 +19,7 @@ const Main = () => {
   const cardId = useAppSelector(state => state.cardId);
 
   const [offersListByCity, setOffersListByCity] = useState<Card[]>([]);
-  const [coordinateList, setCoordinateList] = useState<CityCoordinate[]>([]);
+  const [coordinatesList, setCoordinatesList] = useState<CityCoordinate[]>([]);
   const [centerCoordinate, setCenterCoordinate] = useState<CityCoordinate>({latitude: 0, longitude: 0, zoom: 0});
   const [sortingType, setSortingType] = useState<string>('popular');
   const [defaultList, setDefaultList] = useState<string>(JSON.stringify(offersListByCity));
@@ -27,7 +27,6 @@ const Main = () => {
   const [message, setMessage] = useState<boolean>(false);
 
   useEffect(() => {
-    store.dispatch(fetchFavoriteOffersList());
     if (offersList.length) {
       store.dispatch(fetchOfferList());
     }
@@ -38,7 +37,7 @@ const Main = () => {
       const filteredList = offersList.filter(item => item.city.name === currentCity);
       setOffersListByCity(filteredList);
       setDefaultList(JSON.stringify(filteredList));
-      setCoordinateList(filteredList.map(item => item.location));
+      setCoordinatesList(filteredList.map(item => item.location));
       setCenterCoordinate(filteredList[0]?.city.location);
       setMessage(false);
     }
@@ -90,13 +89,13 @@ const Main = () => {
                 <h2 className="visually-hidden">Places</h2>
                 <b className="places__found">{`${offersListByCity.length} places to stay in ${currentCity}`}</b>
                 <SortingList action={setSortingType}/>
-                {!isLoading && <PlaceCardList cardList={offersListByCity}/>}
+                {!isLoading && <PlaceCardsList cardsList={offersListByCity}/>}
                 {isLoading && <Spinner/>}
               </section>
               <div className="cities__right-section">
                 <div className="cities__map map">
                   <Map centerCoordinate={centerCoordinate}
-                       listCoordinate={coordinateList}
+                       coordinatesList={coordinatesList}
                        selectedLocation={selectedLocation}
                        mapHeight={DEFAULT_MAP_HEIGHT}/>
                 </div>

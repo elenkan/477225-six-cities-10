@@ -31,6 +31,7 @@
       "htmlacademy/react-typescript"
     ],
     "rules": {
+      "no-console": "off",
       "react/jsx-max-props-per-line": [
         2,
         {

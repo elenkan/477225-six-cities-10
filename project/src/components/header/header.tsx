@@ -11,10 +11,8 @@ type HeaderProps = {
 const Header = ({isLoginPage}: HeaderProps) => {
   const authorizationStatus = useAppSelector(state => state.authorizationStatus);
   const userInfo = useAppSelector(state => state.userInfo);
-  const favoriteList = useAppSelector(state => state.favoriteOffersList);
+  const favoriteOffersList = useAppSelector(state => state.favoriteOffersList);
   const clickHandler = () => store.dispatch(logout());
-
-
   return (
     <header className="header">
       <div className="container">
@@ -36,7 +34,7 @@ const Header = ({isLoginPage}: HeaderProps) => {
                     <Link className="header__logo-link" to={AppRouteList.Favorites}>
                       <span className="header__user-name user__name">{userInfo.name}</span>
                     </Link>
-                    <span className="header__favorite-count">{favoriteList.length}</span>
+                    <span className="header__favorite-count">{favoriteOffersList.length}</span>
                   </div>}
                   {!authorizationStatus &&
                   <Link to={AppRouteList.Login}>

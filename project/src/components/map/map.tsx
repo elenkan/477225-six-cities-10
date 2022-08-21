@@ -8,19 +8,19 @@ import {useAppSelector} from '../../hooks/stateHooks';
 
 type PropsType = {
   centerCoordinate: CityCoordinate,
-  listCoordinate: CityCoordinate[],
+  coordinatesList: CityCoordinate[],
   mapHeight: string,
   selectedLocation?: CityCoordinate | null
 }
 
-const Map = ({centerCoordinate, listCoordinate, mapHeight, selectedLocation}: PropsType) => {
+const Map = ({centerCoordinate, coordinatesList, mapHeight, selectedLocation}: PropsType) => {
   const mapRef = useRef(null);
   const map = useMap(mapRef, centerCoordinate);
   const currentCity = useAppSelector(state => state.city);
 
   useEffect(() => {
     if (map) {
-      listCoordinate.forEach(point => {
+      coordinatesList.forEach(point => {
         leaflet
           .marker({
             lat: point.latitude,
@@ -31,7 +31,7 @@ const Map = ({centerCoordinate, listCoordinate, mapHeight, selectedLocation}: Pr
           .addTo(map);
       });
     }
-  }, [map, centerCoordinate, listCoordinate, selectedLocation, currentCity]);
+  }, [map, centerCoordinate, coordinatesList, selectedLocation, currentCity]);
 
 
   return (

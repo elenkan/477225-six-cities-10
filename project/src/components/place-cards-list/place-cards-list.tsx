@@ -5,13 +5,13 @@ import PlaceCard from '../place-card';
 import classNames from 'classnames';
 
 type PropsType = {
-  cardList: Card[]
+  cardsList: Card[]
 }
 
-const PlaceCardList = ({cardList}: PropsType) => {
+const PlaceCardsList = ({cardsList}: PropsType) => {
   const [classTitle, setClassTitle] = useState<string>('');
   const location = useLocation();
-  const memoCardList = useMemo(() => cardList,[cardList]);
+  const memoCardList = useMemo(() => cardsList,[cardsList]);
   const classListTitle = classNames(
     {
       'favorites__places': location.pathname.includes('favorites'),
@@ -47,4 +47,4 @@ const PlaceCardList = ({cardList}: PropsType) => {
   );
 };
 
-export default PlaceCardList;
+export default PlaceCardsList;

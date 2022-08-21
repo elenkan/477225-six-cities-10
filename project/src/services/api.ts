@@ -4,9 +4,7 @@ import {StatusCodes} from 'http-status-codes';
 import {toast} from 'react-toastify';
 import {store} from '../store';
 import {setIsRedirect} from '../actions/actions';
-
-const URL = 'https://10.react.pages.academy/six-cities';
-const REQUEST_TIMEOUT = 5000;
+import {URL, REQUEST_TIMEOUT} from '../constants';
 
 const StatusCodesData: Record<number, boolean> = {
   [StatusCodes.UNAUTHORIZED]: true,
@@ -34,7 +32,7 @@ export const createApi = (): AxiosInstance => {
   api.interceptors.response.use(
     response => {
       if (response.status === StatusCodes.NO_CONTENT) {
-        toast.info('Сеанс завершён');
+        toast.info('Session ended!');
       }
       return response;
     },

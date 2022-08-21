@@ -1,5 +1,5 @@
 import Header from '../../components/header';
-import PlaceCardList from '../../components/place-card-list';
+import PlaceCardsList from '../../components/place-cards-list';
 import ReviewsList from '../../components/reviews-list';
 import Map from '../../components/map';
 import {useAppSelector} from '../../hooks/stateHooks';
@@ -19,10 +19,10 @@ import moment from 'moment';
 const Room = () => {
   const {id} = useParams();
   const isLoading = useAppSelector(state => state.isLoading);
-  const [coordinateList, setCoordinateList] = useState<CityCoordinate[]>([]);
+  const [coordinatesList, setCoordinatesList] = useState<CityCoordinate[]>([]);
   const [centerCoordinate, setCenterCoordinate] = useState<CityCoordinate>({latitude: 0, longitude: 0, zoom: 0});
   const navigate = useNavigate();
-  const [sortedReviewList, setSortedReviewList] = useState<Review[]>([]);
+  const [sortedReviewsList, setSortedReviewsList] = useState<Review[]>([]);
   const offer = useAppSelector(state => state.offer);
   const isRedirect = useAppSelector(state => state.isRedirect);
 
@@ -50,7 +50,7 @@ const Room = () => {
   useEffect(() => {
     if (reviews.length) {
       const sortedReviews = [...reviews].sort((a,b) => moment(b.date, 'DD-MM-YYYY').diff(moment(a.date,'DD-MM-YYYY')));
-      setSortedReviewList(sortedReviews);
+      setSortedReviewsList(sortedReviews);
     }
   },[reviews]);
 
@@ -58,7 +58,7 @@ const Room = () => {
     if (nearbyOffersList.length > 0) {
       const nearbyList = nearbyOffersList.map(item => item.location);
       nearbyList.push(offer.location);
-      setCoordinateList(nearbyList);
+      setCoordinatesList(nearbyList);
       setCenterCoordinate(nearbyOffersList[0].city.location);
     }
   }, [nearbyOffersList]);
@@ -146,20 +146,20 @@ const Room = () => {
                       </p>
                     </div>
                   </div>
-                  <ReviewsList reviewsList={sortedReviewList.length > REVIEWS_LIMIT_COUNT
-                    ? sortedReviewList.slice(0,REVIEWS_LIMIT_COUNT)
-                    : sortedReviewList}
+                  <ReviewsList reviewsList={sortedReviewsList.length > REVIEWS_LIMIT_COUNT
+                    ? sortedReviewsList.slice(0,REVIEWS_LIMIT_COUNT)
+                    : sortedReviewsList}
                   />
                 </div>
               </div>
               <section className="property__map map">
-                <Map centerCoordinate={centerCoordinate} listCoordinate={coordinateList} selectedLocation={offer.location} mapHeight={MAP_HEIGHT}/>
+                <Map centerCoordinate={centerCoordinate} coordinatesList={coordinatesList} selectedLocation={offer.location} mapHeight={MAP_HEIGHT}/>
               </section>
             </section>
             <div className="container">
               <section className="near-places places">
                 <h2 className="near-places__title">Other places in the neighbourhood</h2>
-                <PlaceCardList cardList={nearbyOffersList}/>
+                <PlaceCardsList cardsList={nearbyOffersList}/>
               </section>
             </div>
           </main>

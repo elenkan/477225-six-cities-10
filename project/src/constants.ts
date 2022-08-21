@@ -1,5 +1,9 @@
 import leaflet from 'leaflet';
 
+export const URL = 'https://10.react.pages.academy/six-cities';
+
+export const REQUEST_TIMEOUT = 5000;
+
 export const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
   'August', 'September', 'October', 'November', 'December'] as const;
 

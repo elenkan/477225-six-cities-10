@@ -38,7 +38,7 @@ const FavoriteButton = ({isFavorite, isOfferPage, id}: PropsType) => {
     <button className={buttonClass}
             type="button"
             onClick={clickButtonHandler}>
-      <svg className={`${isOfferPage ? 'property' : 'place-card'}__bookmark-icon`}
+      <svg className="place-card__bookmark-icon"
            width={isOfferPage ? '31' : '18'}
            height={isOfferPage ? '33' : '19'}>
         <use xlinkHref="#icon-bookmark"/>

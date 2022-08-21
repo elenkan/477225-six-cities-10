@@ -1,5 +1,5 @@
 import Header from '../../components/header';
-import PlaceCardList from '../../components/place-card-list';
+import PlaceCardsList from '../../components/place-cards-list';
 import {store} from '../../store';
 import {fetchFavoriteOffersList} from '../../actions/api-actions';
 import {useAppSelector} from '../../hooks/stateHooks';
@@ -38,7 +38,7 @@ const Favorites = () => {
                           </a>
                         </div>
                       </div>
-                      <PlaceCardList cardList={item.list}/>
+                      <PlaceCardsList cardsList={item.list}/>
                     </li>
                   ))
                 }

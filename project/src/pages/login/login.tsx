@@ -2,7 +2,7 @@ import Header from '../../components/header';
 import {ChangeEvent, FormEvent, useEffect, useState} from 'react';
 import {AuthData} from '../../types/auth';
 import {store} from '../../store';
-import {login} from '../../actions/api-actions';
+import {fetchFavoriteOffersList, login} from '../../actions/api-actions';
 import {useNavigate} from 'react-router-dom';
 import {CITIES_LIST} from '../../constants';
 import {setCurrentCity} from '../../actions/actions';
@@ -33,6 +33,7 @@ const Login = ({isAuth}: PropsType) => {
     store.dispatch(setCurrentCity(getRandomCity(0,CITIES_LIST.length - 1)));
     if (isAuth) {
       navigate('/', { replace: true });
+      store.dispatch(fetchFavoriteOffersList());
     }
   },[]);
 

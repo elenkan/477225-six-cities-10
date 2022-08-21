@@ -6,9 +6,9 @@ export const getOffersList = createAction('getOffersList', offersList => ({paylo
 
 export const getOffer = createAction('getOffer', offer => ({payload: offer}));
 
-export const getReviews = createAction('getReviews', review => ({payload: review}));
+export const getReviews = createAction('getReviews', reviews => ({payload: reviews}));
 
-export const getNearbyOffersList = createAction('getNearbyOffersList', nearbyOffer => ({payload: nearbyOffer}));
+export const getNearbyOffersList = createAction('getNearbyOffersList', nearbyOffers => ({payload: nearbyOffers}));
 
 export const setIsLoading = createAction('setIsLoading', value => ({payload: value}));
 
