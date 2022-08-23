@@ -30,10 +30,10 @@ const useMap = (mapRef: MutableRefObject<HTMLElement | null>, coordinate: CityCo
   }, [mapRef, map]);
 
   useEffect(() => {
-    map?.panTo({
+    map?.flyTo({
       lat: coordinate.latitude,
       lng: coordinate.longitude,
-    });
+    }, coordinate.zoom, {animate: false});
   }, [coordinate]);
 
   return map;

@@ -22,7 +22,7 @@ const Login = ({isAuth}: PropsType) => {
   });
   const navigate = useNavigate();
   const currentCity = useAppSelector(state => state.city);
-  const passwordTest = /[0-9]{1,}[A-Za-zА-Яа-яЁё]{1,}/;
+  const passwordTest = /(?=.*[0-9]{1,})(?=.*[A-Za-zА-Яа-яЁё]{1,})/;
 
   const getRandomCity = (min: number, max: number): string => {
     const randomNumber = Math.round(min + Math.random() * (max - min));
@@ -46,7 +46,11 @@ const Login = ({isAuth}: PropsType) => {
     evt.preventDefault();
     if (formData.password.match(passwordTest)) {
       store.dispatch(login(formData)).then(() => {
-        navigate('/', { replace: true });
+        if (isAuth || localStorage.getItem('six-cities-token')) {
+          navigate('/', { replace: true });
+        } else {
+          toast.warn('Something wrong! Try sign in later');
+        }
       });
     } else {
       toast.error('The password must consist of at least one letter and a number');

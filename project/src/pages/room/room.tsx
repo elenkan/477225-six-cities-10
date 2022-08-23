@@ -44,6 +44,13 @@ const Room = () => {
     }
   }, [offer.id]);
 
+  useEffect(() => {
+    if (offer.id && offer.id !== Number(id)) {
+      window.location.reload();
+      window.scrollTo( 0, 0);
+    }
+  },[id]);
+
   const reviews = useAppSelector(state => state.reviewsList);
   const nearbyOffersList = useAppSelector(state => state.nearbyOffersList);
 
